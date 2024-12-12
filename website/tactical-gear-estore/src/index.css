@@ -1,0 +1,16 @@
+/* index.css */
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+
+body {
+  font-family: 'Staatliches', sans-serif;
+}
+
+.btn-primary {
+  background-color: #3b4b54;
+  border-color: #3b4b54;
+}
+
+.btn-primary:hover {
+  background-color: #2a383f;
+  border-color: #2a383f;
+}
