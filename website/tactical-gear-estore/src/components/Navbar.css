@@ -1,63 +1,50 @@
-/* Base styling for the navbar */
+/* Navbar.css */
+
+/* Base navbar styling */
 .navbar-custom {
-    background-color: transparent; /* Make the background initially transparent */
-    box-shadow: 0 0.5px 1px rgb(253, 252, 252); /* Subtle shadow for modern effect */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
+  background-color: #1f1f1f !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 999; /* Ensure it's in front of other elements */
   
-  .navbar-custom .navbar-brand-custom {
-    font-family: 'Staatliches', sans-serif; /* Tactical font for the brand */
-    font-size: 2rem; /* Larger font size for the brand name */
-    font-weight: bold;
-    color: #F2EBE3; /* White text */
-    text-transform: uppercase;
-    letter-spacing: 2px; /* Slight letter spacing for a clean look */
-    transition: color 0.3s ease; /* Smooth hover transition */
-    margin-left: -60px;
-    margin-top:10px;
-  }
-  
-  .navbar-custom .navbar-brand-custom:hover {
-    color: #f0ad4e; /* Gold color on hover */
-  }
-  
-  /* Nav link styling */
-  .nav-link-custom {
-    font-family: 'Staatliches', sans-serif;
-    font-size: 2rem; /* Slightly larger font size for readability */
-    color: #F2EBE3 !important; /* Ensure links are white */
-    text-transform: uppercase; /* Capitalize nav items */
-    padding: 8px 16px; /* Increased padding for easier clicking */
-    transition: color 0.3s ease, transform 0.3s ease;
-    margin-right: 10px;
-    margin-top:10px;
-    letter-spacing: 1.5px;
-  }
-  
-  .nav-link-custom:hover {
-    color: #f0ad4e !important; /* Highlight color on hover */
-    transform: scale(1.25); /* Slight scale effect on hover */
-  }
-  
-  /* Navbar background changes on scroll */
-  .navbar-custom.scrolled {
-    background-color: rgba(0, 0, 0, 0.8); /* Dark background when scrolled */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Darker shadow when scrolled */
-  }
-  
-  /* Adjust navbar on smaller screens */
-  @media (max-width: 992px) {
-    .navbar-custom {
-      padding: 10px 0;
-    }
-  
-    .navbar-brand-custom {
-      font-size: 1.5rem; /* Slightly smaller font size for mobile */
-    }
-  
-    .nav-link-custom {
-      font-size: 1rem; /* Smaller font size for mobile */
-      padding: 10px 12px; /* Slightly increased padding */
-    }
-  }
-  
+  /* 3D perspective to make the flip effect noticeable */
+  perspective: 1000px;
+
+  /* We'll animate via transform + opacity on the .navbar-show / .navbar-hidden */
+  transition:
+    transform 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  transform-origin: top; /* pivot from the top edge */
+}
+
+/* Brand name & nav link styling (same as before) */
+.navbar-brand-custom {
+  color: #ffffff !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+
+/* Nav links in a subtle gray that highlights on hover */
+.nav-link-custom {
+  color: #cccccc !important;
+  margin: 0 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.nav-link-custom:hover {
+  color: #5f7632 !important; /* Army-green accent */
+}
+
+/* 3D show class (scrolling up or near top) */
+.navbar-show {
+  transform: rotateX(0deg);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 3D hide class (scrolling down) */
+.navbar-hidden {
+  transform: rotateX(90deg);
+  opacity: 0;
+  pointer-events: none; 
+}
