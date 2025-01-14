@@ -1,9 +1,11 @@
+// src/components/AdminDashboard.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
-  console.log('AdminDashboard mounted'); // Debugging line
+  console.log('AdminDashboard mounted'); // Debugging log
+
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({
     name: '',
@@ -14,14 +16,22 @@ function AdminDashboard() {
     weight: '',
     description: '',
   });
+  const [error, setError] = useState(null); // For error handling
 
   useEffect(() => {
+    console.log('AdminDashboard - Fetching products'); // Debugging log
     // Fetch existing products
     axios.get('/weapons', {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     })
-    .then((response) => setProducts(response.data))
-    .catch((error) => console.error(error));
+    .then((response) => {
+      console.log('AdminDashboard - Products fetched:', response.data); // Debugging log
+      setProducts(response.data);
+    })
+    .catch((error) => {
+      console.error('AdminDashboard - Error fetching products:', error);
+      setError('Failed to fetch products. Please try again later.');
+    });
   }, []);
 
   const handleInputChange = (e) => {
@@ -35,7 +45,7 @@ function AdminDashboard() {
     })
     .then((response) => {
       alert('Product added successfully!');
-      setProducts([...products, newProduct]);
+      setProducts([...products, response.data]); // Use response data with `id`
       setNewProduct({
         name: '',
         type: '',
@@ -46,12 +56,17 @@ function AdminDashboard() {
         description: '',
       });
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error('AdminDashboard - Error adding product:', error);
+      setError('Failed to add product. Please try again.');
+    });
   };
 
   return (
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
+
+      {error && <p className="error-message">{error}</p>} {/* Display error message */}
 
       <section className="add-product">
         <h2>Add New Product</h2>

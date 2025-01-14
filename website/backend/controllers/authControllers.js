@@ -1,76 +1,68 @@
-// src/App.js
-import React, { useEffect, useState } from 'react';
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
-import { CartProvider } from './components/CartContext';
-import axios from 'axios';
-import NavigationBar from './components/Navbar';
-import CartPanel from './components/CartPanel';
-import AdminPage from './pages/AdminPage';
-import HomePage from './pages/HomePage';
-import ShopPage from './pages/ShopPage';
-import AboutPage from './pages/AboutPage';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
-import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute
+const connection = require('../config/db');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { validationResult } = require('express-validator');
 
-function App() {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true); // Add loading state
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const adminStatus = localStorage.getItem('isAdmin') === 'true';
-    if (token) {
-      // Optionally, verify the token with the backend
-      // For simplicity, we'll assume the token is valid
-      setIsAdmin(adminStatus);
+// Register new user
+exports.register = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
-    setLoading(false);
-  }, []);
 
-  if (loading) {
-    return <div>Loading...</div>; // Or a spinner
-  }
+  //  const { username, password, email } = req.body;
+  const { username, password, email, isAdmin } = req.body; // Allow isAdmin in request
 
-  return (
-    <Router>
-      <CartProvider>
-        <NavigationBar />
-        
-        {/* Slide-out cart overlay */}
-        <CartPanel />
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/shop" element={<ShopPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
+        const query = 'INSERT INTO users (username, password, email, isAdmin) VALUES (?, ?, ?, ?)';
+        connection.query(query, [username, hashedPassword, email,isAdmin || 0], (error) => {
+            if (error) {
+                return res.status(500).json({ message: 'Error during registration', error });
+            }
+            res.status(201).json({ message: 'User successfully registered!' });
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error during registration', error });
+    }
+};
 
-          {/* Always define the /admin route, but protect it */}
-          <Route 
-            path="/admin" 
-            element={
-              <ProtectedRoute isAllowed={isAdmin} redirectPath="/">
-                <AdminPage />
-              </ProtectedRoute>
-            } 
-          />
-
-          {/* Fallback route for 404 - Not Found */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </CartProvider>
-    </Router>
-  );
-}
-
-// Example NotFound component
-const NotFound = () => (
-  <div>
-    <h2>404 - Page Not Found</h2>
-    <p>The page you are looking for does not exist.</p>
-  </div>
-);
-
-export default App;
+// Login user with email and password
+exports.login = (req, res) => {
+    const { email, password } = req.body;
+  
+    const query = 'SELECT * FROM users WHERE email = ?';
+    connection.query(query, [email], async (error, results) => {
+      if (error) {
+        return res.status(500).json({ message: 'Server error', error });
+      }
+  
+      if (results.length === 0) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
+  
+      const user = results[0];
+      const isMatch = await bcrypt.compare(password, user.password);
+  
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
+  
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+  
+      // Include isAdmin in the response
+      res.json({ token, isAdmin: user.isAdmin });
+    });
+  };
+  
+// Fetch user data
+exports.getUserData = (req, res) => {
+    const query = 'SELECT id, username, email FROM users WHERE id = ?';
+    connection.query(query, [req.user.userId], (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: 'Server error' });
+        }
+        res.json(results[0]);
+    });
+};
