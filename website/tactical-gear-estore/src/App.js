@@ -11,7 +11,7 @@ import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ProtectedRoute from './components/ProtectedRoute'; // Default import
-
+import AccountPage from './pages/AccountPage'; // Import AccountPage
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
@@ -49,8 +49,17 @@ function App() {
         <Route 
           path="/admin" 
           element={
-            <ProtectedRoute isAllowed={isAdmin} redirectPath="/admin">
+            <ProtectedRoute isAllowed={isAdmin} redirectPath="/">
               <AdminPage />
+            </ProtectedRoute>
+          } 
+        />
+
+        <Route 
+          path="/account" 
+          element={
+            <ProtectedRoute isAllowed={!!localStorage.getItem('token')} redirectPath="/login">
+              <AccountPage />
             </ProtectedRoute>
           } 
         />

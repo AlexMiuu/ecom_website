@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './HeroSection.css';
 import 'aos/dist/aos.css';
 import AOS from 'aos';
+import { useNavigate } from 'react-router-dom';
 
 import FrontPage1 from '../images/Header1.jpeg';
 import FrontPage2 from '../images/Header2.jpeg';
@@ -16,6 +17,7 @@ import Product2 from '../images/category1.jpeg';
 const images = [FrontPage1, FrontPage2, FrontPage3, FrontPage4];
 
 function HeroSection() {
+  const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -29,6 +31,12 @@ function HeroSection() {
 
     return () => clearInterval(interval);
   }, []);
+
+  const handleButtonClick = () => {
+    // This will navigate the user to '/your-target-page'
+    navigate('/shop');
+  };
+
 
   return (
     <div className="homepage">
@@ -75,13 +83,14 @@ function HeroSection() {
             <img src={Product1} alt="Tactical Backpack" />
             <h3>Tactical Backpack</h3>
             <p>$89.99</p>
-            <button className="btn btn-secondary">View Details</button>
+            <button className="btn btn-secondary" onClick={handleButtonClick}>View Details</button>
           </div>
           <div className="product-card" data-aos="fade-left">
             <img src={Product2} alt="Combat Boots" />
             <h3>Combat Boots</h3>
             <p>$129.99</p>
-            <button className="btn btn-secondary">View Details</button>
+        
+            <button className="btn btn-secondary" onClick={handleButtonClick}>View Details</button>
           </div>
         </div>
       </section>

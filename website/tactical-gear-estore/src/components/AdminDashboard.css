@@ -1,49 +1,80 @@
+/* src/components/AdminDashboard.css */
+
 .admin-dashboard {
-    padding: 2rem;
-    background-color: #1f1f1f;
-    color: #fff;
-  }
-  
-  .add-product {
-    margin-bottom: 2rem;
-  }
-  
-  .add-product form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .add-product input,
-  .add-product textarea {
-    margin-bottom: 1rem;
-    padding: 0.8rem;
-    background-color: #2a2a2a;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-  }
-  
-  .add-product button {
-    background-color: #5f7632;
-    color: #fff;
-    border: none;
-    padding: 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .add-product button:hover {
-    background-color: #6b8e23;
-  }
-  
-  .product-list ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .product-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #333;
-  }
-  
+  padding: 2rem;
+  background-color: #1f1f1f;
+  color: #fff;
+}
+
+.add-product {
+  margin-bottom: 2rem;
+}
+
+.add-product form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-product input,
+.add-product textarea {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background-color: #2a2a2a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.add-product button {
+  background-color: #5f7632;
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-product button:hover {
+  background-color: #6b8e23;
+}
+
+.product-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.product-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #333;
+}
+
+.product-info {
+  flex: 1;
+}
+
+/* New Styles for Delete Button */
+.delete-button {
+  background-color: #d9534f;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c9302c;
+}
+
+.error-message {
+  color: #f0ad4e;
+  background-color: #333;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}

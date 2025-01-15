@@ -20,3 +20,28 @@ exports.createWeapon = (req, res) => {
         res.status(201).json({ message: 'Armă adăugată cu succes!' });
     });
 };
+
+exports.deleteWeapon = (req, res) => {
+    const { id } = req.params; // Extract weapon ID from URL parameters
+
+    // Validate the presence of the ID
+    if (!id) {
+        return res.status(400).json({ message: 'ID-ul armei este necesar pentru ștergere.' });
+    }
+
+    const query = 'DELETE FROM weapons WHERE id = ?'; // SQL query to delete the weapon
+
+    connection.query(query, [id], (error, results) => {
+        if (error) {
+            console.error('Eroare la ștergerea armei:', error);
+            return res.status(500).json({ message: 'Eroare la ștergerea armei.', error });
+        }
+
+        // Check if any rows were affected (i.e., if the weapon existed)
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Armă nu a fost găsită.' });
+        }
+
+        res.status(200).json({ message: 'Armă ștearsă cu succes!' });
+    });
+};

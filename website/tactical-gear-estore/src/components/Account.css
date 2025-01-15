@@ -1,0 +1,105 @@
+/* src/pages/AccountPage.css */
+
+.account-page {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #1e1e1e; /* Dark background for tactical feel */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #f0f0f0; /* Light text for contrast */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .account-page h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #00ff99; /* Tactical green accent */
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+  
+  .account-page p {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ff6347; /* Tomato color for success/error messages */
+    font-weight: bold;
+  }
+  
+  .account-page form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .account-page label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .account-page input,
+  .account-page textarea {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .account-page input:focus,
+  .account-page textarea:focus {
+    border-color: #00ff99; /* Focus border color */
+    background-color: #3a3a3a;
+    outline: none;
+  }
+  
+  .account-page textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .account-page button {
+    padding: 12px;
+    background-color: #00ff99; /* Tactical green for button */
+    border: none;
+    border-radius: 5px;
+    color: #1e1e1e;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .account-page button:hover {
+    background-color: #00e68a;
+    transform: translateY(-2px);
+  }
+  
+  .account-page button:active {
+    background-color: #00cc7a;
+    transform: translateY(0);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .account-page {
+      margin: 20px;
+      padding: 20px;
+    }
+  
+    .account-page h2 {
+      font-size: 1.75rem;
+    }
+  
+    .account-page input,
+    .account-page textarea {
+      font-size: 0.95rem;
+    }
+  
+    .account-page button {
+      font-size: 0.95rem;
+    }
+  }
+  

@@ -58,11 +58,25 @@ exports.login = (req, res) => {
   
 // Fetch user data
 exports.getUserData = (req, res) => {
-    const query = 'SELECT id, username, email FROM users WHERE id = ?';
-    connection.query(query, [req.user.userId], (error, results) => {
-        if (error) {
-            return res.status(500).json({ message: 'Server error' });
-        }
-        res.json(results[0]);
-    });
+  const query = 'SELECT id, username, email, phoneNumber, shipmentAddress FROM users WHERE id = ?';
+  connection.query(query, [req.user.userId], (error, results) => {
+      if (error || results.length === 0) {
+          return res.status(500).json({ message: 'Server error or user not found' });
+      }
+      res.json(results[0]);
+  });
+};
+
+// Update user data
+exports.updateUserData = (req, res) => {
+  const { username, email, phoneNumber, shipmentAddress } = req.body;
+  
+  // Basic validation can be added here or use express-validator
+  const query = 'UPDATE users SET username = ?, email = ?, phoneNumber = ?, shipmentAddress = ? WHERE id = ?';
+  connection.query(query, [username, email, phoneNumber, shipmentAddress, req.user.userId], (error, results) => {
+      if (error) {
+          return res.status(500).json({ message: 'Error updating user data', error });
+      }
+      res.json({ message: 'User data updated successfully!' });
+  });
 };

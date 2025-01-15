@@ -3,7 +3,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const ProtectedRoute = ({ isAllowed, redirectPath = '/', children }) => {
+const ProtectedRoute = ({ isAllowed, redirectPath = '/login', children }) => {
   console.log('ProtectedRoute - isAllowed:', isAllowed);
 
   if (!isAllowed) {
